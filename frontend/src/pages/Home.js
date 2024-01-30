@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react"
-// import workout from "../../../backend/models/workoutModel";
+import { useEffect } from "react"
+// import { useWorkoutsContext } from "../hooks/useContextWorkout"
+import { useWorkoutsContext } from "../hooks/useContextWorkout";
+
 
 import WorkoutDetails from "../components/WorkoutDetails"
 import WorkoutFrom from "../components/WorkoutForm";
 const Home = () => {
-  const [workouts, setWorkouts] = useState(null)
+  const { workouts, dispatch } = useWorkoutsContext();
 
 
   useEffect(() => {
@@ -12,8 +14,10 @@ const Home = () => {
       try {
         const response = await fetch("/api/workouts");
         const data = await response.json();
+        console.log(data)
         if (response.ok) {
-          setWorkouts(data);
+          console.log(data)
+          dispatch({ type: "SET_WORKOUTS", payload: data });
         }
         console.log(workouts)
       } catch (error) {

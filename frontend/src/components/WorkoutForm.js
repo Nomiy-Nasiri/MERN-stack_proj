@@ -1,13 +1,14 @@
+import { useWorkoutsContext } from "../hooks/useContextWorkout";
 import { useState } from "react"
 
 const WorkoutFrom = () => {
+    const { dispatch } = useWorkoutsContext()
     const [title, setTitle] = useState("")
     const [load, setLoad] = useState("")
     const [reps, setReps] = useState("")
     const [error, setError] = useState(null)
     const handleSubmit = async (e) => {
         e.preventDefault()
-        // console.log(title, load, reps)
         const workout = {
             title,
             load,
@@ -20,21 +21,28 @@ const WorkoutFrom = () => {
                 "Content-Type": "application/json"
             }
         })
-        const json =  response.json()
-        if (!response.ok) {
-            setError(json.error)
+        try {
+            const json = await response.json();
+
+            if (!response.ok) {
+                setError(json.error);
+            } else {
+                setError("");
+                setTitle("");
+                setLoad("");
+                setReps("");
+                dispatch({ type: 'CREATE_WORKOUT', payload: json })
+
+                console.log("New workout is created with title:", json);
+            }
+        } catch (error) {
+            setError("Error parsing response");
+            console.error("Error parsing JSON:", error);
         }
-        if (response.ok) {
-            setError(null)
-            setTitle("")
-            setLoad("")
-            setReps("")
-            console.log("new workout is created with title: ", title)
-        }
-    }
+    };
     return (
         <form className="create" onSubmit={handleSubmit}>
-            <h3>Create new WorkOut</h3>
+            <h3>Keep tracking the Fitness!</h3>
 
             <label>Excersize name</label>
             <input
@@ -56,7 +64,7 @@ const WorkoutFrom = () => {
                 onChange={(e) => { setReps(e.target.value) }}
                 value={reps}
             />
-            <button type="submit">Submit</button>
+            <button type="submit">Create a fitness Track</button>
             {error && <div className="error">{error}</div>}
         </form>
     )

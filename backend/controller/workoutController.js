@@ -5,7 +5,7 @@ import Workout from '../models/workoutModel.js';
 // get all workouts
 export const GetAllWorkouts = async (req, res) => {
     try {
-        const workouts = await Workout.find();
+        const workouts = await Workout.find().sort({ createdAt: -1 });
         return res.status(200).json(workouts);
     }
     catch (err) {
@@ -18,7 +18,7 @@ export const GetAllWorkouts = async (req, res) => {
 export const GetWorkoutById = async (req, res) => {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
-       return res.status(404).json({
+        return res.status(404).json({
             message: "Workout not found"
         });
     }
@@ -43,39 +43,39 @@ export const CreatWorkout = async (req, res) => {
         return res.status(200).json(workout);
     }
     catch (err) {
-       return res.status(500).json({
+        return res.status(500).json({
             error: err.message
         });
     }
 }
 
 // update workout
-export const UpdateWorkOut = async (req,res)=>{
-    const {id} = req.params
+export const UpdateWorkOut = async (req, res) => {
+    const { id } = req.params
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({
             message: "Workout not found"
         });
     }
-    const workout = await Workout.findByIdAndUpdate({_id : id},{
+    const workout = await Workout.findByIdAndUpdate({ _id: id }, {
         ...req.body
     })
     res.status(200).json(workout)
 }
 // delete workout
 export const DeleteWorkout = async (req, res) => {
-   const { id } = req.params;
-   if (!mongoose.Types.ObjectId.isValid(id)) {
-       return res.status(404).json({
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({
             message: "Workout not found"
         });
     }
 
-    const workout = await Workout.findOneAndDelete({_id: id});
+    const workout = await Workout.findOneAndDelete({ _id: id });
     if (!workout) {
         return res.status(404).json({
             message: "Workout not found"
         });
     }
-    res.status(200).json({"message":"Deleted"});
+    res.status(200).json({ "message": "Deleted" });
 }
