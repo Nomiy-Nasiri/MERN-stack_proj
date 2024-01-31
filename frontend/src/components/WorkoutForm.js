@@ -31,7 +31,7 @@ const WorkoutFrom = () => {
                 setTitle("");
                 setLoad("");
                 setReps("");
-                dispatch({ type: 'CREATE_WORKOUT', payload: json })
+                dispatch({ type: 'CREATE_WORKOUT', data: json })
 
                 console.log("New workout is created with title:", json);
             }

@@ -17,9 +17,10 @@ const Home = () => {
         console.log(data)
         if (response.ok) {
           console.log(data)
-          dispatch({ type: "SET_WORKOUTS", payload: data });
+          dispatch({ type: "SET_WORKOUTS", data });
         }
-        console.log(workouts)
+        // why here null
+        // console.log(workouts)
       } catch (error) {
         console.error("Error fetching workouts:", error);
       }
