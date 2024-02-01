@@ -1,3 +1,4 @@
+
 import { useWorkoutsContext } from "../hooks/useContextWorkout";
 import { useState } from "react"
 
@@ -7,6 +8,7 @@ const WorkoutFrom = () => {
     const [load, setLoad] = useState("")
     const [reps, setReps] = useState("")
     const [error, setError] = useState(null)
+    const [emptyFields, setEmptyFields] = useState([])
     const handleSubmit = async (e) => {
         e.preventDefault()
         const workout = {
@@ -26,11 +28,16 @@ const WorkoutFrom = () => {
 
             if (!response.ok) {
                 setError(json.error);
+                setEmptyFields(json.emptyFields);
+
             } else {
-                setError("");
+
                 setTitle("");
                 setLoad("");
                 setReps("");
+                setError("");
+                setEmptyFields([]);
+
                 dispatch({ type: 'CREATE_WORKOUT', data: json })
 
                 console.log("New workout is created with title:", json);
@@ -49,6 +56,8 @@ const WorkoutFrom = () => {
                 type="text"
                 onChange={(e) => { setTitle(e.target.value) }}
                 value={title}
+                // className={emptyFields.includes('title') ? 'error' : ''}
+                className={`emptyFields.indexOf('title') !== -1 ? 'error' : ''`}
             />
 
             <label>Load (kg)</label>
@@ -56,6 +65,9 @@ const WorkoutFrom = () => {
                 type="number"
                 onChange={(e) => { setLoad(e.target.value) }}
                 value={load}
+                // className={emptyFields.includes('load') ? 'error' : ''}
+                className={`emptyFields.indexOf('load') !== -1 ? 'error' : ''`}
+
             />
 
             <label>Reps</label>
@@ -63,6 +75,9 @@ const WorkoutFrom = () => {
                 type="number"
                 onChange={(e) => { setReps(e.target.value) }}
                 value={reps}
+                // className={emptyFields.includes('reps') ? 'error' : ''}
+                className={`emptyFields.indexOf('reps') !== -1 ? 'error' : ''`}
+
             />
             <button type="submit">Create a fitness Track</button>
             {error && <div className="error">{error}</div>}

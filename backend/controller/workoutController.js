@@ -37,6 +37,23 @@ export const GetWorkoutById = async (req, res) => {
 export const CreatWorkout = async (req, res) => {
     const { title, reps, load } = req.body;
 
+    let emptyFields = [];
+
+    if(!title) {
+        emptyFields.push('title')
+    }
+    if(!reps) {
+        emptyFields.push('reps')
+    }
+    if(!load) {
+        emptyFields.push('load')
+    }
+    if(emptyFields.length > 0) {
+        return res.status(400).json({
+            error: "please provide " + emptyFields.join(',')
+        })
+    }
+
     // add doc to db
     try {
         const workout = await Workout.create({ title, reps, load });
