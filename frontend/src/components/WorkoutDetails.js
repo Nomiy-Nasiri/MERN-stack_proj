@@ -1,11 +1,11 @@
+
 import { useWorkoutsContext } from "../hooks/useContextWorkout";
 
 
-const WorkoutDetails = ({ workout }) => {
+const WorkoutDetails = ({ workout,setEditedWorkout }) => {
   const { dispatch } = useWorkoutsContext();
 
-
-// its not sync with db
+  // delete workout
   const handleDelete = async () => {
 
     const response = await fetch("/api/workouts/"+ workout._id,
@@ -17,13 +17,16 @@ const WorkoutDetails = ({ workout }) => {
     console.log(json)
     if (response.ok) {
       dispatch({ type: "DELETE_WORKOUT", data: {id: workout._id} });
-      console.log("deleted the workout:")
+      console.log("deleted the workout")
     }
 
     if (!response.ok) {
       throw new Error("Something went wrong!")
     }
 
+  }
+  const handleEdit =() => {
+    setEditedWorkout(workout)
   }
 
   return (
@@ -33,6 +36,7 @@ const WorkoutDetails = ({ workout }) => {
       <p><strong>Reps:</strong>{workout.reps}</p>
       <p> {workout.createdAt}</p>
       <span onClick={handleDelete}>Delete Track</span>
+      <button onClick={handleEdit}>Edit Track</button>
 
     </div>
   )

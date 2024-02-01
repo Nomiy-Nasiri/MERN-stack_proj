@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 // import { useWorkoutsContext } from "../hooks/useContextWorkout"
 import { useWorkoutsContext } from "../hooks/useContextWorkout";
 
@@ -7,6 +7,7 @@ import WorkoutDetails from "../components/WorkoutDetails"
 import WorkoutFrom from "../components/WorkoutForm";
 const Home = () => {
   const { workouts, dispatch } = useWorkoutsContext();
+  const [editedWorkout,setEditedWorkout]=useState()
 
 
   useEffect(() => {
@@ -14,9 +15,7 @@ const Home = () => {
       try {
         const response = await fetch("/api/workouts");
         const data = await response.json();
-        console.log(data)
-        if (response.ok) {
-          console.log(data)
+        if (response.ok) {         
           dispatch({ type: "SET_WORKOUTS", data });
         }
         // why here null
@@ -32,12 +31,12 @@ const Home = () => {
     <div className="home">
       <div className="workouts">
         {workouts && workouts.map((workout, index) => (
-          <WorkoutDetails key={index} workout={workout} />
+          <WorkoutDetails key={index} workout={workout} setEditedWorkout={setEditedWorkout}/>
 
         ))}
 
       </div>
-      <WorkoutFrom />
+      <WorkoutFrom  workouts={workouts}  editedWorkout={editedWorkout}/>
     </div>
   )
 }
