@@ -39,30 +39,30 @@ export const CreatWorkout = async (req, res) => {
 
     let emptyFields = [];
 
-    if(!title) {
+    if(!title) {      
         emptyFields.push('title')
     }
-    if(!reps) {
+    if(!reps) {      
         emptyFields.push('reps')
     }
-    if(!load) {
+    if(!load) {         
         emptyFields.push('load')
     }
     if(emptyFields.length > 0) {
         return res.status(400).json({
             error: "please provide " + emptyFields.join(',')
-        })
-    }
+        })          
+    }               
 
     // add doc to db
     try {
         const workout = await Workout.create({ title, reps, load });
         return res.status(200).json(workout);
-    }
+    }     
     catch (err) {
         return res.status(500).json({
             error: err.message
-        });
+        });             
     }
 }
 

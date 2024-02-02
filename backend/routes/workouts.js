@@ -5,13 +5,13 @@ import { CreatWorkout, DeleteWorkout, GetAllWorkouts, GetWorkoutById, UpdateWork
 const router = express.Router();
 
 // get all workouts
-router.get('/', GetAllWorkouts);
+router.get('/', GetAllWorkouts);           
 // getwworkout by id
-router.get('/:id', GetWorkoutById);
+router.get('/:id', GetWorkoutById);            
 // create workout
-router.post('/', CreatWorkout);
+router.post('/', CreatWorkout);        
 // delete Workout
-router.delete('/:id', DeleteWorkout);
+router.delete('/:id', DeleteWorkout);     
 
-router.patch('/:id', UpdateWorkOut);
-export default router
+router.patch('/:id', UpdateWorkOut);     
+export default router   
